@@ -11,10 +11,12 @@ const baseMatch = new Map(
   Array.from(colorsMapById.keys()).map((key) => [key, -1])
 )
 
-function adjust(n: number) {
-  // Exponential match by a factor of 8 within the range of 0 to 1
-  // e^(-8ex/100)
-  return Math.exp((-2 * Math.exp(1) * n) / 100)
+const closeness = 0.1
+
+const adjust = (n: number) => {
+  // Exponential match by a factor of 8 within the range of 0 to 1, closeness factor c
+  // e^(-2ecx/100)
+  return Math.exp((-2 * (closeness * 10) * Math.exp(1) * n) / 100)
 }
 
 function useStore() {

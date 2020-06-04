@@ -1,21 +1,21 @@
 import {
+  ComponentEventHandler,
   Flex,
   Input,
-  Text,
-  ComponentEventHandler,
   InputProps,
+  Text,
 } from '@fluentui/react-northstar'
 import React, { useCallback } from 'react'
-import { SearchColorDisplay } from './SearchColorDisplay'
-import { useTheme } from '../theme/useTheme'
 import { useContainer } from 'unstated-next'
 import { Store } from '../state/AppContext'
+import { useTheme } from '../theme/useTheme'
+import { SearchColorDisplay } from './SearchColorDisplay'
 
 export const SearchBar: React.FC = () => {
   const { search, setSearch } = useContainer(Store)
   const { theme } = useTheme()
 
-  const onChange: ComponentEventHandler<InputProps> = useCallback(
+  const onInputChange: ComponentEventHandler<InputProps> = useCallback(
     (_e, data) => {
       if (data) {
         setSearch(String(data.value))
@@ -37,11 +37,15 @@ export const SearchBar: React.FC = () => {
       vAlign="center"
       gap="gap.medium"
     >
-      <Flex styles={{ width: 700, margin: 'auto' }}>
+      <Flex
+        styles={{ width: '700px', margin: 'auto' }}
+        vAlign="center"
+        gap="gap.medium"
+      >
         <Input
           inverted
           autoFocus
-          onChange={onChange}
+          onChange={onInputChange}
           placeholder={`ex: ${search}`}
         />
         {/* <Dropdown items={['default', 'brand', 'red']} /> */}
