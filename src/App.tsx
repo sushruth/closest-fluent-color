@@ -7,17 +7,17 @@ import { Store } from './state/AppContext'
 
 let theme = themes.teams
 
-if (window.matchMedia) {
-  if (window.matchMedia('(-ms-high-contrast: active)').matches) {
-    theme = themes.teamsHighContrast
-  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    theme = themes.teamsDark
-  }
-}
+// if (window.matchMedia) {
+//   if (window.matchMedia('(-ms-high-contrast: active)').matches) {
+//     theme = themes.teamsHighContrast
+//   } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+//     theme = themes.teamsDark
+//   }
+// }
 
 document.documentElement.style.setProperty(
   '--main-bg-color',
-  theme.siteVariables.colorScheme.default.background
+  theme.siteVariables.colorScheme.default.background2
 )
 
 function App() {

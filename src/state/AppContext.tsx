@@ -1,7 +1,7 @@
-import { useState, useCallback } from 'react'
-import { colorsMapById, UndefinedColor } from '../lib/fluentui.colors'
 import * as culori from 'culori'
+import { useCallback, useRef, useState } from 'react'
 import { createContainer } from 'unstated-next'
+import { colorsMapById, UndefinedColor } from '../lib/fluentui.colors'
 
 // const toRgb = culori.formatter('rgb')
 // const lab = culori.converter('lab')
@@ -11,17 +11,14 @@ const baseMatch = new Map(
   Array.from(colorsMapById.keys()).map((key) => [key, -1])
 )
 
-const closeness = 0.1
-
-const adjust = (n: number) => {
-  // Exponential match by a factor of 8 within the range of 0 to 1, closeness factor c
-  // e^(-2ecx/100)
-  return Math.exp((-2 * (closeness * 10) * Math.exp(1) * n) / 100)
-}
+const DEBOUNCE_TIME_LIMIT = 500
 
 function useStore() {
   const [search, setSearchRaw] = useState('')
   const [matches, setMatch] = useState(baseMatch)
+  const [closeness, setClosenessRaw] = useState(0.5)
+  const timeout = useRef<number>()
+  const closenessTemp = useRef<number>(-1)
 
   const setSearch = useCallback(
     (input?: string) => {
@@ -45,7 +42,7 @@ function useStore() {
             const colorToMatch = colorsMapById.get(id)
             if (colorToMatch && colorToMatch !== UndefinedColor) {
               const diff = colorDiff(inputColor, culori.parse(colorToMatch))
-              matchResult.set(id, adjust(diff))
+              matchResult.set(id, diff)
             }
           }
           setMatch(matchResult)
@@ -55,10 +52,21 @@ function useStore() {
     [matches]
   )
 
+  const setCloseness = useCallback((newCloseness: number) => {
+    closenessTemp.current = newCloseness
+    clearTimeout(timeout.current)
+    timeout.current = window.setTimeout(() => {
+      timeout.current = undefined
+      setClosenessRaw(closenessTemp.current)
+    }, DEBOUNCE_TIME_LIMIT)
+  }, [])
+
   return {
     search,
     setSearch,
     matches,
+    closeness,
+    setCloseness,
   }
 }
 

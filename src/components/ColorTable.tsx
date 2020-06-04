@@ -1,4 +1,4 @@
-import { Flex, TableRowProps, Text } from '@fluentui/react-northstar'
+import { Flex, Header, TableRowProps } from '@fluentui/react-northstar'
 import { Table } from '@fluentui/react-northstar/dist/es/components/Table/Table'
 import React, { useMemo } from 'react'
 import {
@@ -54,12 +54,22 @@ export const ColorTable: React.FC<ColorTableProps> = React.memo(
 
     return (
       <Flex
-        styles={{ maxWidth: '700px', margin: 'auto', position: 'relative' }}
+        styles={{
+          maxWidth: '700px',
+          margin: 'auto',
+          position: 'relative',
+          '& .ui-table__cell__content': {
+            width: '100%',
+          },
+          '& .ui-table__cell': {
+            height: 'auto',
+          },
+        }}
         column
         gap="gap.medium"
         padding="padding.medium"
       >
-        <Text content={colorSchemeNames[scheme]} />
+        <Header content={colorSchemeNames[scheme]} />
         <Table compact header={header} rows={rows} />
       </Flex>
     )

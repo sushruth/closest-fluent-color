@@ -4,6 +4,10 @@ import {
   Input,
   InputProps,
   Text,
+  Slider,
+  SliderProps,
+  Header,
+  pxToRem,
 } from '@fluentui/react-northstar'
 import React, { useCallback } from 'react'
 import { useContainer } from 'unstated-next'
@@ -12,7 +16,7 @@ import { useTheme } from '../theme/useTheme'
 import { SearchColorDisplay } from './SearchColorDisplay'
 
 export const SearchBar: React.FC = () => {
-  const { search, setSearch } = useContainer(Store)
+  const { search, setSearch, closeness, setCloseness } = useContainer(Store)
   const { theme } = useTheme()
 
   const onInputChange: ComponentEventHandler<InputProps> = useCallback(
@@ -22,6 +26,15 @@ export const SearchBar: React.FC = () => {
       }
     },
     [setSearch]
+  )
+
+  const onSliderChange: ComponentEventHandler<SliderProps> = useCallback(
+    (_e, data) => {
+      if (data?.value) {
+        setCloseness(Number(data.value))
+      }
+    },
+    [setCloseness]
   )
 
   return (
@@ -42,19 +55,38 @@ export const SearchBar: React.FC = () => {
         vAlign="center"
         gap="gap.medium"
       >
-        <Input
-          inverted
-          autoFocus
-          onChange={onInputChange}
-          placeholder={`ex: ${search}`}
-        />
-        {/* <Dropdown items={['default', 'brand', 'red']} /> */}
-        <Flex.Item push>
-          <Flex gap="gap.medium" vAlign="center">
-            {search && <Text content={`Searching for "${search}"`} />}
+        <Flex column fill>
+          <Header
+            as="h1"
+            styles={{ margin: 0, marginBottom: '1rem', fontSize: pxToRem(22) }}
+            content="Search for Fluentui color"
+          />
+          <Flex vAlign="center" gap="gap.medium">
+            <Text content={`Search for:`} />
+            <Input
+              inverted
+              autoFocus
+              onChange={onInputChange}
+              placeholder={`ex: ${search}`}
+            />
+
             <SearchColorDisplay color={search} />
+            <Flex.Item push>
+              <Flex gap="gap.medium" vAlign="center">
+                <Text content="Sensitivity" />
+                <Slider
+                  fluid
+                  styles={{ width: '100px' }}
+                  min={0.1}
+                  max={1.0}
+                  step={0.1}
+                  onChange={onSliderChange}
+                  defaultValue={closeness}
+                />
+              </Flex>
+            </Flex.Item>
           </Flex>
-        </Flex.Item>
+        </Flex>
       </Flex>
     </Flex>
   )

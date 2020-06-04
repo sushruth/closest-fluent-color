@@ -1,19 +1,19 @@
 import React from 'react'
 // Credit - https://www.toptal.com/designers/subtlepatterns/webb-dark-pattern/
-import patternDark from '../assets/webb-dark.png'
+// import patternDark from '../assets/webb-dark.png'
 // Credit - https://www.toptal.com/designers/subtlepatterns/webb-pattern/
 import pattern from '../assets/webb.png'
 import { useTheme } from '../theme/useTheme'
 
 let imageToUse = pattern
 
-if (
-  window.matchMedia &&
-  (window.matchMedia('(-ms-high-contrast: active)').matches ||
-    window.matchMedia('(prefers-color-scheme: dark)').matches)
-) {
-  imageToUse = patternDark
-}
+// if (
+//   window.matchMedia &&
+//   (window.matchMedia('(-ms-high-contrast: active)').matches ||
+//     window.matchMedia('(prefers-color-scheme: dark)').matches)
+// ) {
+//   imageToUse = patternDark
+// }
 
 type SearchColorDisplayProps = { color: string }
 
