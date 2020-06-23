@@ -1,13 +1,15 @@
 import {
+  Checkbox,
+  CheckboxProps,
   ComponentEventHandler,
   Flex,
+  Header,
   Input,
   InputProps,
-  Text,
+  pxToRem,
   Slider,
   SliderProps,
-  Header,
-  pxToRem,
+  Text,
 } from '@fluentui/react-northstar'
 import React, { useCallback } from 'react'
 import { useContainer } from 'unstated-next'
@@ -15,7 +17,15 @@ import { Store } from '../state/AppContext'
 import { useTheme } from '../theme/useTheme'
 import { SearchColorDisplay } from './SearchColorDisplay'
 
-export const SearchBar: React.FC = () => {
+type SearchBarProps = {
+  onThemeToggle: ComponentEventHandler<CheckboxProps>
+  currentTheme?: string
+}
+
+export const SearchBar: React.FC<SearchBarProps> = ({
+  onThemeToggle,
+  currentTheme: currentTeme,
+}) => {
   const { search, setSearch, closeness, setCloseness } = useContainer(Store)
   const { theme } = useTheme()
 
@@ -56,11 +66,27 @@ export const SearchBar: React.FC = () => {
         gap="gap.medium"
       >
         <Flex column fill>
-          <Header
-            as="h1"
-            styles={{ margin: 0, marginBottom: '1rem', fontSize: pxToRem(22) }}
-            content="Search for Fluentui color"
-          />
+          <Flex>
+            <Header
+              as="h1"
+              styles={{
+                margin: 0,
+                marginBottom: '1rem',
+                fontSize: pxToRem(22),
+              }}
+              content="Search for Fluentui color"
+            />
+            <Flex.Item push>
+              <Flex vAlign="center">
+                <Checkbox
+                  toggle
+                  onChange={onThemeToggle}
+                  defaultChecked={currentTeme === 'teamsDark'}
+                />
+                <Text content="Dark mode" />
+              </Flex>
+            </Flex.Item>
+          </Flex>
           <Flex vAlign="center" gap="gap.medium">
             <Text content={`Search for:`} />
             <Input

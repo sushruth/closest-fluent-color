@@ -1,5 +1,10 @@
-import { Provider, themes } from '@fluentui/react-northstar'
-import React from 'react'
+import {
+  CheckboxProps,
+  ComponentEventHandler,
+  Provider,
+  themes,
+} from '@fluentui/react-northstar'
+import React, { useCallback, useState } from 'react'
 import { ColorTable } from './components/ColorTable'
 import { SearchBar } from './components/SearchBar'
 import { Schemes } from './lib/fluentui.colors'
@@ -7,24 +12,41 @@ import { Store } from './state/AppContext'
 
 let theme = themes.teams
 
-// if (window.matchMedia) {
-//   if (window.matchMedia('(-ms-high-contrast: active)').matches) {
-//     theme = themes.teamsHighContrast
-//   } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-//     theme = themes.teamsDark
-//   }
-// }
+const themeStored = localStorage.getItem('cfc_theme') ?? 'teams'
 
-document.documentElement.style.setProperty(
-  '--main-bg-color',
-  theme.siteVariables.colorScheme.default.background2
-)
+if (/teamsDark/i.test(themeStored)) {
+  console.log('Making it dark')
+  theme = themes.teamsDark
+}
 
 function App() {
+  const [themeUsed, setTheme] = useState(theme)
+
+  const onThemeToggle: ComponentEventHandler<CheckboxProps> = useCallback(
+    (_, data) => {
+      if (data?.checked) {
+        setTheme(themes.teamsDark)
+        document.documentElement.style.setProperty(
+          '--main-bg-color',
+          themes.teamsDark.siteVariables.colorScheme.default.background2
+        )
+        localStorage.setItem('cfc_theme', 'teamsDark')
+      } else {
+        setTheme(themes.teams)
+        document.documentElement.style.setProperty(
+          '--main-bg-color',
+          themes.teams.siteVariables.colorScheme.default.background2
+        )
+        localStorage.setItem('cfc_theme', 'teams')
+      }
+    },
+    []
+  )
+
   return (
-    <Provider as="main" theme={theme}>
+    <Provider as="main" theme={themeUsed}>
       <Store.Provider>
-        <SearchBar />
+        <SearchBar currentTheme={themeStored} onThemeToggle={onThemeToggle} />
         {Object.keys(Schemes).map((scheme) => {
           return (
             <ColorTable
