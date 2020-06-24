@@ -50,7 +50,16 @@ function App() {
 
   return (
     <Provider as="main" theme={themeUsed} styles={{ overflow: 'hidden' }}>
-      <Flex column fill styles={{ overflowY: 'scroll' }}>
+      <Flex
+        column
+        fill
+        styles={{
+          overflowY: 'scroll',
+          '> *': {
+            flexShrink: 0,
+          },
+        }}
+      >
         <Store.Provider>
           <SearchBar currentTheme={themeStored} onThemeToggle={onThemeToggle} />
           {Object.keys(Schemes).map((scheme) => {

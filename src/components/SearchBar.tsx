@@ -77,6 +77,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               }}
               gap="gap.medium"
               vAlign="center"
+              padding="padding.medium"
             >
               <Checkbox
                 toggle
