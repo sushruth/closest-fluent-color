@@ -3,14 +3,13 @@ import {
   CheckboxProps,
   ComponentEventHandler,
   Flex,
-  Header,
   Input,
   InputProps,
-  pxToRem,
   Slider,
   SliderProps,
   Text,
 } from '@fluentui/react-northstar'
+import { Divider } from '@fluentui/react-northstar/dist/es/components/Divider/Divider'
 import React, { useCallback } from 'react'
 import { useContainer } from 'unstated-next'
 import { Store } from '../state/AppContext'
@@ -60,45 +59,36 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       vAlign="center"
       gap="gap.medium"
     >
-      <Flex
-        styles={{ width: '700px', margin: 'auto' }}
-        vAlign="center"
-        gap="gap.medium"
-      >
-        <Flex column fill>
-          <Flex>
-            <Header
-              as="h1"
-              styles={{
-                margin: 0,
-                marginBottom: '1rem',
-                fontSize: pxToRem(22),
-              }}
-              content="Search for Fluentui color"
-            />
-            <Flex.Item push>
-              <Flex vAlign="center">
-                <Checkbox
-                  toggle
-                  onChange={onThemeToggle}
-                  defaultChecked={currentTeme === 'teamsDark'}
-                />
-                <Text content="Dark mode" />
-              </Flex>
-            </Flex.Item>
-          </Flex>
-          <Flex vAlign="center" gap="gap.medium">
-            <Text content={`Search for:`} />
-            <Input
-              inverted
-              autoFocus
-              onChange={onInputChange}
-              placeholder={`ex: ${search}`}
-            />
+      <Flex column fill>
+        <Flex vAlign="center" gap="gap.medium">
+          <Text content={`Search for:`} />
+          <Input
+            inverted
+            autoFocus
+            onChange={onInputChange}
+            placeholder={`ex: ${search}`}
+          />
 
-            <SearchColorDisplay color={search} />
-            <Flex.Item push>
-              <Flex gap="gap.medium" vAlign="center">
+          <SearchColorDisplay color={search} />
+          <Flex.Item push>
+            <Flex
+              style={{
+                height: '32px',
+              }}
+              gap="gap.medium"
+              vAlign="center"
+            >
+              <Checkbox
+                toggle
+                onChange={onThemeToggle}
+                defaultChecked={currentTeme === 'teamsDark'}
+                label="Dark mode"
+              />
+              <Divider
+                vertical
+                color={theme.siteVariables.colorScheme.default.border3}
+              />
+              <Flex vAlign="center" gap="gap.small">
                 <Text content="Sensitivity" />
                 <Slider
                   fluid
@@ -110,8 +100,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                   defaultValue={closeness}
                 />
               </Flex>
-            </Flex.Item>
-          </Flex>
+            </Flex>
+          </Flex.Item>
         </Flex>
       </Flex>
     </Flex>

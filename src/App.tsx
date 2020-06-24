@@ -1,9 +1,9 @@
 import {
   CheckboxProps,
   ComponentEventHandler,
+  Flex,
   Provider,
   themes,
-  Flex,
 } from '@fluentui/react-northstar'
 import React, { useCallback, useState } from 'react'
 import { ColorTable } from './components/ColorTable'

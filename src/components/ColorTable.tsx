@@ -56,6 +56,7 @@ export const ColorTable: React.FC<ColorTableProps> = React.memo(
       <Flex
         styles={{
           maxWidth: '700px',
+          width: '700px',
           margin: 'auto',
           position: 'relative',
           '& .ui-table__cell__content': {
